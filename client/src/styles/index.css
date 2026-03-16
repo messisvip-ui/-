@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-b from-starlight-100 to-forest-100;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-starlight-500 hover:bg-starlight-600 text-white font-semibold py-3 px-6 rounded-full transition-all duration-300 shadow-lg hover:shadow-starlight-500/50;
+  }
+  
+  .btn-secondary {
+    @apply bg-white/80 hover:bg-white text-forest-700 font-semibold py-3 px-6 rounded-full transition-all duration-300 border border-forest-300;
+  }
+  
+  .card {
+    @apply bg-white/90 backdrop-blur-sm rounded-2xl shadow-xl p-6;
+  }
+  
+  .glow-text {
+    @apply text-starlight-500 drop-shadow-[0_0_10px_rgba(146,116,255,0.5)];
+  }
+}
+
+/* 3D 容器 */
+#canvas-container {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 0;
+}
+
+/* UI 层 */
+#ui-layer {
+  position: relative;
+  z-index: 10;
+  pointer-events: none;
+}
+
+#ui-layer > * {
+  pointer-events: auto;
+}

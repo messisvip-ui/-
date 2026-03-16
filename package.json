@@ -1,0 +1,26 @@
+{
+  "name": "light-contract",
+  "version": "1.0.0",
+  "description": "光之契约·精灵森境 - 教育游戏化班级管理系统",
+  "private": true,
+  "workspaces": [
+    "client",
+    "teacher-client",
+    "server"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:server\" \"npm run dev:client\"",
+    "dev:server": "npm run dev --workspace=server",
+    "dev:client": "npm run dev --workspace=client",
+    "dev:teacher": "npm run dev --workspace=teacher-client",
+    "build": "npm run build --workspace=client && npm run build --workspace=teacher-client",
+    "start": "npm start --workspace=server",
+    "install:all": "npm install && npm install --workspaces"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
