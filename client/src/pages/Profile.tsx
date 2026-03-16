@@ -14,12 +14,15 @@ export default function Profile() {
     return () => clearTimeout(timer)
   }, [])
 
-  if (loading || !isInitialized || !currentStudent || !sprite) {
+  if (loading) {
+    return null // LoadingScreen 会显示
+  }
+
+  if (!isInitialized || !currentStudent || !sprite) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">👤</div>
-          <p className="text-white text-xl">正在加载个人主页...</p>
+        <div className="text-center text-white">
+          <p className="text-xl">请先访问首页初始化</p>
         </div>
       </div>
     )

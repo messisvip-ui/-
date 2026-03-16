@@ -10,16 +10,19 @@ export default function Forest() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000)
+    const timer = setTimeout(() => setLoading(false), 500)
     return () => clearTimeout(timer)
   }, [])
 
-  if (loading || !isInitialized) {
+  if (loading) {
+    return null // LoadingScreen 会显示
+  }
+
+  if (!isInitialized || !sprite) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-6xl mb-4">🌲</div>
-          <p className="text-white text-xl">正在加载森林...</p>
+        <div className="text-center text-white">
+          <p className="text-xl">请先访问首页初始化</p>
         </div>
       </div>
     )

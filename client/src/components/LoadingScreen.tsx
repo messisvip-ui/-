@@ -2,10 +2,10 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { useGameStore } from '@/store/gameStore-demo'
 
 export default function LoadingScreen() {
-  const { currentStudent } = useGameStore()
+  const { isInitialized } = useGameStore()
 
-  // 如果已加载，不显示
-  if (currentStudent) return null
+  // 如果已初始化，不显示加载屏幕
+  if (isInitialized) return null
 
   return (
     <AnimatePresence>
@@ -38,7 +38,7 @@ export default function LoadingScreen() {
             animate={{ opacity: 1, y: 0 }}
             className="text-3xl font-bold text-starlight-700 mb-4"
           >
-            正在连接精灵森境...
+            正在初始化...
           </motion.h2>
 
           <motion.p
@@ -47,7 +47,7 @@ export default function LoadingScreen() {
             transition={{ delay: 0.5 }}
             className="text-forest-600"
           >
-            你的光之精灵正在等待与你相遇
+            准备你的光之精灵
           </motion.p>
 
           {/* 加载进度点 */}

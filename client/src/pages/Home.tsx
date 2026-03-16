@@ -19,21 +19,20 @@ export default function Home() {
     // 等待初始化完成
     setTimeout(() => {
       setLoading(false)
-    }, 1000)
+    }, 500)
   }, [])
 
   // 显示加载页面
-  if (loading || !isInitialized) {
+  if (loading) {
+    return null // LoadingScreen 会显示
+  }
+
+  // 确保有数据
+  if (!currentStudent || !sprite) {
     return (
       <div className="min-h-screen pt-24 px-6 flex items-center justify-center">
-        <div className="text-center">
-          <div className="text-8xl mb-6 animate-bounce">🌟</div>
-          <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
-            正在连接精灵森境...
-          </h1>
-          <p className="text-xl text-white/90">
-            你的光之精灵正在等待与你相遇
-          </p>
+        <div className="text-center text-white">
+          <p className="text-xl">初始化失败，请刷新页面</p>
         </div>
       </div>
     )
