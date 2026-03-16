@@ -1,4 +1,4 @@
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore } from '@/store/gameStore-demo'
 import { motion } from 'framer-motion'
 
 export default function Navigation() {

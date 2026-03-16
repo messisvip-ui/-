@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'framer-motion'
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore } from '@/store/gameStore-demo'
 
 export default function LoadingScreen() {
   const { currentStudent } = useGameStore()

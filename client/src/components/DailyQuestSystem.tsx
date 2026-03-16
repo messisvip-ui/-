@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore } from '@/store/gameStore-demo'
 
 // 每日任务定义
 export interface DailyQuest {

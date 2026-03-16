@@ -1,4 +1,4 @@
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore } from '@/store/gameStore-demo'
 import { triggerParticleEffect } from './ParticleEffects'
 
 export default function TaskCompleteNotification() {
