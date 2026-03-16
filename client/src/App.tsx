@@ -1,5 +1,6 @@
 import { Routes, Route } from 'react-router-dom'
 import { useAppStore } from '@/store/appStore'
+import { useEffect } from 'react'
 
 // 页面组件
 import LoginPage from './pages/LoginPage'
@@ -13,7 +14,13 @@ import Profile from './pages/Profile'
 import Navigation from './components/Navigation'
 
 function App() {
-  const { currentStudentId, isTeacher, isInitialized } = useAppStore()
+  const { currentStudentId, isTeacher, isInitialized, initialize } = useAppStore()
+
+  useEffect(() => {
+    if (!isInitialized) {
+      initialize()
+    }
+  }, [])
 
   // 未初始化时显示加载
   if (!isInitialized) {
