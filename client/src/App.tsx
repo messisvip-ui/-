@@ -1,41 +1,45 @@
 import { Routes, Route } from 'react-router-dom'
-import { Canvas } from '@react-three/fiber'
-import { Suspense } from 'react'
+import { useAppStore } from '@/store/appStore'
 
 // 页面组件
+import LoginPage from './pages/LoginPage'
+import TeacherDashboard from './pages/TeacherDashboard'
 import Home from './pages/Home'
 import Forest from './pages/Forest'
 import TaskBoard from './pages/TaskBoard'
 import Profile from './pages/Profile'
-import BondingCeremony from './pages/BondingCeremony'
 
 // UI 层组件
 import Navigation from './components/Navigation'
-import LoadingScreen from './components/LoadingScreen'
 
 function App() {
+  const { currentStudentId, isTeacher, isInitialized } = useAppStore()
+
+  // 未初始化时显示加载
+  if (!isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-starlight-200 to-forest-200">
+        <div className="text-center">
+          <div className="text-6xl mb-4 animate-bounce">✨</div>
+          <p className="text-white text-xl">正在初始化...</p>
+        </div>
+      </div>
+    )
+  }
+
+  // 未登录时显示登录页
+  if (!currentStudentId && !isTeacher) {
+    return <LoginPage />
+  }
+
+  // 教师登录显示管理后台
+  if (isTeacher) {
+    return <TeacherDashboard />
+  }
+
+  // 学生登录显示学生端
   return (
     <div className="relative w-full h-screen overflow-hidden">
-      {/* 3D 场景层 */}
-      <div id="canvas-container">
-        <Canvas
-          camera={{ position: [0, 2, 5], fov: 60 }}
-          shadows
-          dpr={[1, 2]}
-        >
-          <Suspense fallback={null}>
-            {/* 全局光照 */}
-            <ambientLight intensity={0.5} />
-            <directionalLight
-              position={[10, 10, 5]}
-              intensity={1}
-              castShadow
-              shadow-mapSize={[2048, 2048]}
-            />
-          </Suspense>
-        </Canvas>
-      </div>
-
       {/* UI 层 */}
       <div id="ui-layer" className="w-full h-full">
         <Navigation />
@@ -44,9 +48,7 @@ function App() {
           <Route path="/forest" element={<Forest />} />
           <Route path="/tasks" element={<TaskBoard />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/bonding" element={<BondingCeremony />} />
         </Routes>
-        <LoadingScreen />
       </div>
     </div>
   )

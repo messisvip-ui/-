@@ -3,42 +3,16 @@ import { useGameStore } from '@/store/gameStore-demo'
 import PraiseModal from '@/components/PraiseModal'
 import ParticleEffects from '@/components/ParticleEffects'
 
+import { useAppStore } from '@/store/appStore'
+import PraiseModal from '@/components/PraiseModal'
+import ParticleEffects from '@/components/ParticleEffects'
+
 export default function Home() {
-  const { currentStudent, sprite, initialize, isInitialized } = useGameStore()
-  const [loading, setLoading] = useState(true)
+  const { currentStudentId, getStudentData, addStarlight } = useAppStore()
+  const studentData = currentStudentId ? getStudentData(currentStudentId) : null
+  const sprite = studentData?.sprite
+  const studentName = studentData ? '守护者' : '守护者'
 
-  useEffect(() => {
-    // 模拟学生 ID（实际应从登录系统获取）
-    const studentId = localStorage.getItem('studentId') || 'student-001'
-    if (!localStorage.getItem('studentId')) {
-      localStorage.setItem('studentId', studentId)
-    }
-    
-    initialize(studentId)
-    
-    // 等待初始化完成
-    setTimeout(() => {
-      setLoading(false)
-    }, 500)
-  }, [])
-
-  // 显示加载页面
-  if (loading) {
-    return null // LoadingScreen 会显示
-  }
-
-  // 确保有数据
-  if (!currentStudent || !sprite) {
-    return (
-      <div className="min-h-screen pt-24 px-6 flex items-center justify-center">
-        <div className="text-center text-white">
-          <p className="text-xl">初始化失败，请刷新页面</p>
-        </div>
-      </div>
-    )
-  }
-
-  // 添加快捷操作
   const quickActions = [
     { icon: '📋', title: '星光委托', desc: '查看并完成今日任务', href: '/tasks' },
     { icon: '🌲', title: '精灵森林', desc: '探索班级共享空间', href: '/forest' },
@@ -47,8 +21,10 @@ export default function Home() {
   ]
 
   const handleCheckIn = () => {
-    // 签到逻辑
-    alert('✅ 签到成功！获得 10 星光')
+    if (currentStudentId) {
+      addStarlight(currentStudentId, 10)
+      alert('✅ 签到成功！获得 10 星光')
+    }
   }
 
   return (
@@ -57,7 +33,7 @@ export default function Home() {
         {/* 欢迎语 */}
         <div className="text-center mb-12">
           <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
-            欢迎回来，{currentStudent?.name || '守护者'}
+            欢迎回来，{studentName}
           </h1>
           <p className="text-xl text-white/90">
             你的光之精灵 <span className="font-semibold text-starlight-300">{sprite?.name}</span> 正在等待与你一起探索森林
@@ -94,6 +70,41 @@ export default function Home() {
             </div>
           ))}
         </div>
+
+        {/* 今日小提示 */}
+        <div className="card bg-gradient-to-r from-starlight-100 to-forest-100 p-6">
+          <div className="flex items-start gap-4">
+            <div className="text-4xl">💡</div>
+            <div>
+              <h3 className="font-bold text-gray-800 mb-2">今日小提示</h3>
+              <p className="text-gray-700">
+                完成所有委托任务可以获得额外星光奖励！别忘了给同学们送上星光礼赞哦~
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* 星光礼赞按钮 */}
+        <div className="fixed bottom-6 right-6">
+          <button className="card bg-gradient-to-r from-pink-500 to-rose-500 text-white px-6 py-4 rounded-full shadow-lg hover:shadow-xl transition-all hover:scale-105">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl">💝</span>
+              <div className="text-left">
+                <div className="font-bold">星光礼赞</div>
+                <div className="text-sm opacity-90">
+                  {studentData?.dailyPraiseCount || 0}/3
+                </div>
+              </div>
+            </div>
+          </button>
+        </div>
+      </div>
+
+      <PraiseModal />
+      <ParticleEffects />
+    </div>
+  )
+}
 
         {/* 今日提示 */}
         <div className="card bg-gradient-to-r from-starlight-100 to-forest-100">
