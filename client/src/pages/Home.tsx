@@ -1,8 +1,4 @@
 import { useState, useEffect } from 'react'
-import { useGameStore } from '@/store/gameStore-demo'
-import PraiseModal from '@/components/PraiseModal'
-import ParticleEffects from '@/components/ParticleEffects'
-
 import { useAppStore } from '@/store/appStore'
 import PraiseModal from '@/components/PraiseModal'
 import ParticleEffects from '@/components/ParticleEffects'
@@ -11,7 +7,18 @@ export default function Home() {
   const { currentStudentId, getStudentData, addStarlight } = useAppStore()
   const studentData = currentStudentId ? getStudentData(currentStudentId) : null
   const sprite = studentData?.sprite
-  const studentName = studentData ? '守护者' : '守护者'
+  const studentName = studentData?.sprite?.name || '守护者'
+
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading) {
+    return null
+  }
 
   const quickActions = [
     { icon: '📋', title: '星光委托', desc: '查看并完成今日任务', href: '/tasks' },
@@ -101,29 +108,6 @@ export default function Home() {
       </div>
 
       <PraiseModal />
-      <ParticleEffects />
-    </div>
-  )
-}
-
-        {/* 今日提示 */}
-        <div className="card bg-gradient-to-r from-starlight-100 to-forest-100">
-          <div className="flex items-start gap-4">
-            <span className="text-4xl">💡</span>
-            <div>
-              <h4 className="font-bold text-gray-800 mb-2">今日小提示</h4>
-              <p className="text-gray-600">
-                完成所有委托任务可以获得额外星光奖励！别忘了给同学们送上星光礼赞哦~
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* 星光礼赞按钮 */}
-      <PraiseModal />
-      
-      {/* 粒子效果层 */}
       <ParticleEffects />
     </div>
   )
