@@ -1,13 +1,29 @@
+import { useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import Sprite3D from '@/scenes/Sprite3D'
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore } from '@/store/gameStore-demo'
 import { IntimacyProgressBar, UnlockedAnimations } from '@/components/EvolutionSystem'
 
 export default function Profile() {
-  const { currentStudent, sprite, receivedPraises } = useGameStore()
+  const { currentStudent, sprite, receivedPraises, isInitialized } = useGameStore()
+  const [loading, setLoading] = useState(true)
 
-  if (!currentStudent || !sprite) return null
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading || !isInitialized || !currentStudent || !sprite) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">👤</div>
+          <p className="text-white text-xl">正在加载个人主页...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen pt-24 px-6 pb-24">

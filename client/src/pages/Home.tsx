@@ -1,10 +1,43 @@
 import { useState, useEffect } from 'react'
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore } from '@/store/gameStore-demo'
 import PraiseModal from '@/components/PraiseModal'
 import ParticleEffects from '@/components/ParticleEffects'
 
 export default function Home() {
-  const { currentStudent, sprite, initialize } = useGameStore()
+  const { currentStudent, sprite, initialize, isInitialized } = useGameStore()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // 模拟学生 ID（实际应从登录系统获取）
+    const studentId = localStorage.getItem('studentId') || 'student-001'
+    if (!localStorage.getItem('studentId')) {
+      localStorage.setItem('studentId', studentId)
+    }
+    
+    initialize(studentId)
+    
+    // 等待初始化完成
+    setTimeout(() => {
+      setLoading(false)
+    }, 1000)
+  }, [])
+
+  // 显示加载页面
+  if (loading || !isInitialized) {
+    return (
+      <div className="min-h-screen pt-24 px-6 flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-8xl mb-6 animate-bounce">🌟</div>
+          <h1 className="text-4xl font-bold text-white mb-4 drop-shadow-lg">
+            正在连接精灵森境...
+          </h1>
+          <p className="text-xl text-white/90">
+            你的光之精灵正在等待与你相遇
+          </p>
+        </div>
+      </div>
+    )
+  }
 
   // 添加快捷操作
   const quickActions = [

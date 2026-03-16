@@ -1,8 +1,26 @@
-import { useGameStore } from '@/store/gameStore'
+import { useState, useEffect } from 'react'
+import { useGameStore } from '@/store/gameStore-demo'
 import { motion } from 'framer-motion'
 
 export default function TaskBoard() {
-  const { tasks, completeTask } = useGameStore()
+  const { tasks, completeTask, isInitialized } = useGameStore()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 500)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading || !isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">📋</div>
+          <p className="text-white text-xl">正在加载任务...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen pt-24 px-6">

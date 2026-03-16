@@ -1,11 +1,29 @@
+import { useState, useEffect } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Sky, Stars } from '@react-three/drei'
 import Sprite3D from '@/scenes/Sprite3D'
 import ForestScene from '@/scenes/ForestScene'
-import { useGameStore } from '@/store/gameStore'
+import { useGameStore } from '@/store/gameStore-demo'
 
 export default function Forest() {
-  const { sprite, classTotalStarlight, unlockedAreas } = useGameStore()
+  const { sprite, classTotalStarlight, unlockedAreas, isInitialized } = useGameStore()
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000)
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading || !isInitialized) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="text-6xl mb-4">🌲</div>
+          <p className="text-white text-xl">正在加载森林...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="fixed inset-0 z-0">
